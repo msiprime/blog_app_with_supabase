@@ -1,3 +1,4 @@
+import 'package:capestone_test/core/common/widget/animation_wrapper.dart';
 import 'package:flutter/material.dart';
 
 class AuthField extends StatelessWidget {
@@ -16,23 +17,25 @@ class AuthField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      obscureText: obscureText,
-      controller: controller,
-      decoration: InputDecoration(
-        suffixIconConstraints: const BoxConstraints(
-          minHeight: 24,
-          minWidth: 24,
+    return AnimatedWrapper(
+      child: TextFormField(
+        obscureText: obscureText,
+        controller: controller,
+        decoration: InputDecoration(
+          suffixIconConstraints: const BoxConstraints(
+            minHeight: 24,
+            minWidth: 24,
+          ),
+          suffixIcon: suffix,
+          hintText: hintText,
         ),
-        suffixIcon: suffix,
-        hintText: hintText,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please provide a valid $hintText';
+          }
+          return null;
+        },
       ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please provide a valid $hintText';
-        }
-        return null;
-      },
     );
   }
 }

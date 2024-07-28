@@ -6,10 +6,12 @@ import 'package:capestone_test/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:capestone_test/features/auth/presentation/pages/login_page.dart';
 import 'package:capestone_test/features/blog/presentation/pages/blog_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() async {
   await initDependencies();
+  Animate.restartOnHotReload = true;
   runApp(
     MultiBlocProvider(
       providers: GlobalBlocProviders.getProviders(),
