@@ -111,17 +111,18 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const Gap(20),
                       AuthGradientButton(
-                          buttonText: 'Sign in',
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              BlocProvider.of<AuthBloc>(context).add(
-                                AuthSignInEvent(
-                                  email: emailController.text,
-                                  password: passwordController.text,
-                                ),
-                              );
-                            }
-                          }),
+                        buttonText: 'Sign in',
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            BlocProvider.of<AuthBloc>(context).add(
+                              AuthSignInEvent(
+                                email: emailController.text,
+                                password: passwordController.text,
+                              ),
+                            );
+                          }
+                        },
+                      ),
                       const Gap(20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
