@@ -1,3 +1,4 @@
+import 'package:capestone_test/core/common/widget/animation_wrapper.dart';
 import 'package:capestone_test/core/common/widget/loader.dart';
 import 'package:capestone_test/core/theme/app_pallete.dart';
 import 'package:capestone_test/core/util/show_snackbar.dart';
@@ -32,63 +33,11 @@ class _BlogPageState extends State<BlogPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavigationDrawer(
-        tilePadding: const EdgeInsets.symmetric(vertical: 10),
-        children: [
-          const UserAccountsDrawerHeader(
-            decoration: BoxDecoration(
-              color: AppPallete.gradient1,
-              gradient: LinearGradient(
-                colors: [
-                  AppPallete.gradient1,
-                  AppPallete.gradient2,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
-            currentAccountPicture: CircleAvatar(
-              child: Icon(
-                Icons.person,
-              ),
-            ),
-            accountName: Text(
-              'Msi Sakib',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            accountEmail: Text('msisakib958@gmail.com'),
-          ),
-          ListTile(
-            leading: const Icon(Icons.logout),
-            title: const Text('Logout'),
-            onTap: () {
-              context.read<AuthBloc>().add(const AuthSignOutEvent());
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LoginPage(),
-                ),
-                (route) => false,
-              );
-            },
-          ),
-        ],
-      ),
+      drawer: _buildNavigationDrawer(context),
       appBar: AppBar(
         title: const Text('Blog Page'),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.add_circle_outline),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AddBlogPage()),
-              );
-            },
-          ),
+          _buildAddBlogButton(context),
         ],
       ),
       body: BlocConsumer<BlogBloc, BlogState>(
@@ -102,22 +51,86 @@ class _BlogPageState extends State<BlogPage> {
             return const Loader();
           }
           if (state is FetchBlogSuccess) {
-            return ListView.builder(
-              itemCount: state.allBlogs.length,
-              itemBuilder: (context, index) {
-                final blog = state.allBlogs[index];
-                return BlogCard(
-                  blog: blog,
-                  color: index % 2 == 0
-                      ? AppPallete.gradient1
-                      : AppPallete.gradient2,
-                );
-              },
-            );
+            return _buildBlogListView(state);
           }
           return const SizedBox();
         },
       ),
+    );
+  }
+
+  ListView _buildBlogListView(FetchBlogSuccess state) {
+    return ListView.builder(
+      itemCount: state.allBlogs.length,
+      itemBuilder: (context, index) {
+        final blog = state.allBlogs[index];
+        return AnimatedWrapper(
+          child: BlogCard(
+            blog: blog,
+            color: index % 2 == 0 ? AppPallete.gradient1 : AppPallete.gradient2,
+          ),
+        );
+      },
+    );
+  }
+
+  IconButton _buildAddBlogButton(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.add_circle_outline),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AddBlogPage()),
+        );
+      },
+    );
+  }
+
+  NavigationDrawer _buildNavigationDrawer(BuildContext context) {
+    return NavigationDrawer(
+      tilePadding: const EdgeInsets.symmetric(vertical: 10),
+      children: [
+        const UserAccountsDrawerHeader(
+          decoration: BoxDecoration(
+            color: AppPallete.gradient1,
+            gradient: LinearGradient(
+              colors: [
+                AppPallete.gradient1,
+                AppPallete.gradient2,
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          currentAccountPicture: CircleAvatar(
+            child: Icon(
+              Icons.person,
+            ),
+          ),
+          accountName: Text(
+            'Msi Sakib',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          accountEmail: Text('msisakib958@gmail.com'),
+        ),
+        ListTile(
+          leading: const Icon(Icons.logout),
+          title: const Text('Logout'),
+          onTap: () {
+            context.read<AuthBloc>().add(const AuthSignOutEvent());
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const LoginPage(),
+              ),
+              (route) => false,
+            );
+          },
+        ),
+      ],
     );
   }
 }

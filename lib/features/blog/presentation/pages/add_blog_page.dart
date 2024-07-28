@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:capestone_test/core/common/cubits/app_user/app_user_cubit.dart';
+import 'package:capestone_test/core/common/widget/animation_wrapper.dart';
 import 'package:capestone_test/core/common/widget/custom_painters/dotted_border_painter.dart';
 import 'package:capestone_test/core/common/widget/loader.dart';
 import 'package:capestone_test/core/theme/app_pallete.dart';
@@ -30,11 +31,9 @@ class _AddBlogPageState extends State<AddBlogPage> {
 
   void selectedImage() async {
     final pickedImage = await pickImage();
-    // if (pickedImage != null) {
     setState(() {
       image = pickedImage;
     });
-    // }
   }
 
   @override
@@ -120,18 +119,22 @@ class _AddBlogPageState extends State<AddBlogPage> {
                 key: formKey,
                 child: Column(
                   children: [
-                    _buildSelectImageButton(),
+                    AnimatedWrapper(child: _buildSelectImageButton()),
                     const Gap(20),
-                    _buildFilterChips(),
+                    AnimatedWrapper(child: _buildFilterChips()),
                     const Gap(20),
-                    BlogEditor(
-                      hintText: 'Blog Title',
-                      controller: _titleController,
+                    AnimatedWrapper(
+                      child: BlogEditor(
+                        hintText: 'Blog Title',
+                        controller: _titleController,
+                      ),
                     ),
                     const Gap(20),
-                    BlogEditor(
-                      hintText: 'Blog Content',
-                      controller: _contentController,
+                    AnimatedWrapper(
+                      child: BlogEditor(
+                        hintText: 'Blog Content',
+                        controller: _contentController,
+                      ),
                     ),
                   ],
                 ),
