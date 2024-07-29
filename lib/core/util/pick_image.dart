@@ -9,10 +9,8 @@ Future<File?> pickImage() async {
       source: ImageSource.gallery,
     );
     if (xFile != null) {
-      print(xFile.path);
       return File(xFile.path);
     } else {
-      print('No image selected.');
       return null;
     }
   } catch (e) {

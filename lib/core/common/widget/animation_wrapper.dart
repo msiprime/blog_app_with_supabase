@@ -15,10 +15,12 @@ class AnimatedWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return child
-        .animate()
-        .fadeIn(duration: duration)
-        .scale(duration: duration)
-        .move(delay: delay, duration: duration);
+    return RepaintBoundary(
+      child: child
+          .animate()
+          .fadeIn(duration: duration)
+          .scale(duration: duration)
+          .move(delay: delay, duration: duration),
+    );
   }
 }
