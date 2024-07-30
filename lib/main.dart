@@ -31,7 +31,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     context.read<AuthBloc>().add(const AuthIsUserLoggedInEvent());
-    print('triggeringgggggg Auth Is User Logged In Event');
     super.initState();
   }
 
@@ -39,6 +38,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return BlocSelector<AppUserCubit, AppUserState, bool>(
       selector: (state) {
+        AppRouter().updateLoginStatus(state is AppUserLoggedIn);
         return state is AppUserLoggedIn;
       },
       builder: (context, state) {
@@ -46,18 +46,9 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: AppTheme.darkThemeMode,
-          routerConfig: AppRouter(isUserLoggedIn: state).routingMethod(),
+          routerConfig: AppRouter().router,
         );
       },
     );
   }
 }
-
-//   home: BlocSelector<AppUserCubit, AppUserState, bool>(
-//         selector: (state) {
-//           return state is AppUserLoggedIn;
-//         },
-//         builder: (context, isUserLoggedIn) {
-//           return isUserLoggedIn ? const BlogPage() : const LoginPage();
-//         },
-//       ),

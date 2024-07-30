@@ -3,12 +3,11 @@ import 'package:capestone_test/core/common/widget/loader.dart';
 import 'package:capestone_test/core/theme/app_pallete.dart';
 import 'package:capestone_test/core/util/show_snackbar.dart';
 import 'package:capestone_test/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:capestone_test/features/auth/presentation/pages/login_page.dart';
 import 'package:capestone_test/features/blog/presentation/blocs/blog_bloc.dart';
-import 'package:capestone_test/features/blog/presentation/pages/add_blog_page.dart';
 import 'package:capestone_test/features/blog/presentation/widgets/blog_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class BlogPage extends StatefulWidget {
   const BlogPage({super.key});
@@ -78,10 +77,12 @@ class _BlogPageState extends State<BlogPage> {
     return IconButton(
       icon: const Icon(Icons.add_circle_outline),
       onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const AddBlogPage()),
-        );
+        context.goNamed('addBlog');
+        print('failllled');
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => const AddBlogPage()),
+        // );
       },
     );
   }
@@ -121,13 +122,7 @@ class _BlogPageState extends State<BlogPage> {
           title: const Text('Logout'),
           onTap: () {
             context.read<AuthBloc>().add(const AuthSignOutEvent());
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const LoginPage(),
-              ),
-              (route) => false,
-            );
+            context.goNamed('login');
           },
         ),
       ],
