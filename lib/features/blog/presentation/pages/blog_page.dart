@@ -78,11 +78,6 @@ class _BlogPageState extends State<BlogPage> {
       icon: const Icon(Icons.add_circle_outline),
       onPressed: () {
         context.goNamed('addBlog');
-        print('failllled');
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => const AddBlogPage()),
-        // );
       },
     );
   }

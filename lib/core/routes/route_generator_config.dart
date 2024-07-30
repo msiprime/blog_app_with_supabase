@@ -21,19 +21,12 @@ class AppRouter {
 
   GoRouter get router => GoRouter(
         errorPageBuilder: (context, state) => ErrorPage(state: state).page,
-        redirect: (context, state) {
-          if (!_isUserLoggedIn) {
-            return '/';
-          } else if (_isUserLoggedIn) {
-            return '/home';
-          }
-          return null;
-        },
         routes: [
           GoRoute(
             name: 'login',
             path: '/',
             builder: (context, state) => const LoginPage(),
+            redirect: (context, state) => _isUserLoggedIn ? '/home' : '/',
           ),
           GoRoute(
             name: 'home',
