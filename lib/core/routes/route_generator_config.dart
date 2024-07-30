@@ -8,19 +8,14 @@ import 'package:go_router/go_router.dart';
 import 'error_page.dart';
 
 class AppRouter {
-  bool _isUserLoggedIn;
+  AppRouter._privateConstructor();
 
-  AppRouter._privateConstructor(this._isUserLoggedIn);
-
-  static final AppRouter _instance = AppRouter._privateConstructor(false);
+  static final AppRouter _instance = AppRouter._privateConstructor();
 
   factory AppRouter() => _instance;
 
-  void updateLoginStatus(bool isUserLoggedIn) {
-    _isUserLoggedIn = isUserLoggedIn;
-  }
-
   GoRouter get router => GoRouter(
+        debugLogDiagnostics: true,
         errorPageBuilder: (context, state) => ErrorPage(state: state).page,
         routes: [
           GoRoute(

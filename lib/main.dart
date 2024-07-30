@@ -10,8 +10,8 @@ import 'core/routes/route_generator_config.dart';
 
 void main() async {
   await initDependencies();
-  Bloc.observer = GlobalBlocObserver();
 
+  Bloc.observer = GlobalBlocObserver();
   Animate.restartOnHotReload = true;
   runApp(
     MultiBlocProvider(

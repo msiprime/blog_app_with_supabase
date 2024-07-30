@@ -18,9 +18,7 @@ class AppTheme {
       backgroundColor: AppPallete.backgroundColor,
     ),
     chipTheme: const ChipThemeData(
-      color: WidgetStatePropertyAll(
-        AppPallete.backgroundColor,
-      ),
+      color: WidgetStatePropertyAll(AppPallete.backgroundColor),
       side: BorderSide.none,
     ),
     inputDecorationTheme: InputDecorationTheme(
