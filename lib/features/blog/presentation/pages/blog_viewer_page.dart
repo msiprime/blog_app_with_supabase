@@ -1,3 +1,4 @@
+import 'package:capestone_test/core/common/widget/animation_wrapper.dart';
 import 'package:capestone_test/core/common/widget/loader.dart';
 import 'package:capestone_test/core/theme/app_pallete.dart';
 import 'package:capestone_test/core/util/calculate_reading_time.dart';
@@ -6,11 +7,6 @@ import 'package:capestone_test/features/blog/domain/entities/blog_entity.dart';
 import 'package:flutter/material.dart';
 
 class BlogViewerPage extends StatelessWidget {
-  static route(BlogEntity blog) => MaterialPageRoute(
-        builder: (context) => BlogViewerPage(
-          blog: blog,
-        ),
-      );
   final BlogEntity blog;
 
   const BlogViewerPage({
@@ -58,25 +54,29 @@ class BlogViewerPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.network(
-                      blog.imageUrl,
-                      loadingBuilder: (context, child, loadingProgress) =>
-                          loadingProgress == null
-                              ? child
-                              : const SizedBox(
-                                  height: 200,
-                                  child: Loader(),
-                                ),
+                  AnimatedWrapper(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(
+                        blog.imageUrl,
+                        loadingBuilder: (context, child, loadingProgress) =>
+                            loadingProgress == null
+                                ? child
+                                : const SizedBox(
+                                    height: 200,
+                                    child: Loader(),
+                                  ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Text(
-                    blog.content,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      height: 2,
+                  AnimatedWrapper(
+                    child: Text(
+                      blog.content,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        height: 2,
+                      ),
                     ),
                   ),
                 ],

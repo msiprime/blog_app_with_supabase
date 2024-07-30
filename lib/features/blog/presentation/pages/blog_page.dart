@@ -39,21 +39,26 @@ class _BlogPageState extends State<BlogPage> {
           _buildAddBlogButton(context),
         ],
       ),
-      body: BlocConsumer<BlogBloc, BlogState>(
-        listener: (context, state) {
-          if (state is BlogFailure) {
-            showSnackBar(context: context, message: state.message);
-          }
+      body: RefreshIndicator(
+        onRefresh: () async {
+          context.read<BlogBloc>().add(const GetAllBlogsEvent());
         },
-        builder: (context, state) {
-          if (state is BlogLoading) {
-            return const Loader();
-          }
-          if (state is FetchBlogSuccess) {
-            return _buildBlogListView(state);
-          }
-          return const SizedBox();
-        },
+        child: BlocConsumer<BlogBloc, BlogState>(
+          listener: (context, state) {
+            if (state is BlogFailure) {
+              showSnackBar(context: context, message: state.message);
+            }
+          },
+          builder: (context, state) {
+            if (state is BlogLoading) {
+              return const Loader();
+            }
+            if (state is FetchBlogSuccess) {
+              return _buildBlogListView(state);
+            }
+            return const SizedBox();
+          },
+        ),
       ),
     );
   }
@@ -117,9 +122,7 @@ class _BlogPageState extends State<BlogPage> {
           title: const Text('Logout'),
           onTap: () {
             context.read<AuthBloc>().add(const AuthSignOutEvent());
-            if (context.read<AuthBloc>().state is AuthInitial) {
-              context.goNamed('login');
-            }
+            context.goNamed('/');
           },
         ),
       ],

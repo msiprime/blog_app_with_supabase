@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:capestone_test/core/error/exceptions.dart';
 import 'package:capestone_test/features/blog/data/datasources/remote_datasources/blog_remote_datasource.dart';
 import 'package:capestone_test/features/blog/data/models/blog_model.dart';
-import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
@@ -16,9 +15,6 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
     try {
       final blogData =
           await supabaseClient.from('blogs2').insert(blog.toJson()).select('*');
-      if (kDebugMode) {
-        print(blogData.first);
-      }
       return BlogModel.fromJson(blogData.first);
     } on PostgrestException catch (e) {
       throw ServerException(e.message);
@@ -55,9 +51,6 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
     try {
       final blogData =
           await supabaseClient.from('blogs2').select('*, profiles (name)');
-      if (kDebugMode) {
-        print(blogData);
-      }
       final response = blogData
           .map(
             (blog) => BlogModel.fromJson(blog).copyWith(

@@ -1,11 +1,11 @@
+import 'package:capestone_test/core/routes/app_routes.dart';
 import 'package:capestone_test/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:capestone_test/features/auth/presentation/pages/signup_page.dart';
 import 'package:capestone_test/features/auth/presentation/widgets/auth_field.dart';
 import 'package:capestone_test/features/auth/presentation/widgets/auth_gradient_button.dart';
-import 'package:capestone_test/features/blog/presentation/pages/blog_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -50,11 +50,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 );
               } else if (state is AuthSuccess) {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => const BlogPage()),
-                  (route) => false,
-                );
+                context.goNamed(AppRoutes.blogPage);
               }
             },
             builder: (context, state) {
@@ -130,12 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                           const Text('Don\'t have an account?'),
                           TextButton(
                             onPressed: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const SignUpPage(),
-                                ),
-                              );
+                              context.goNamed(AppRoutes.signUp);
                             },
                             child: const Text('Sign Up'),
                           ),

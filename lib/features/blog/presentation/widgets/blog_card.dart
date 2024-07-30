@@ -1,7 +1,8 @@
+import 'package:capestone_test/core/routes/app_routes.dart';
 import 'package:capestone_test/core/util/calculate_reading_time.dart';
 import 'package:capestone_test/features/blog/domain/entities/blog_entity.dart';
-import 'package:capestone_test/features/blog/presentation/pages/blog_viewer_page.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class BlogCard extends StatelessWidget {
   final BlogEntity blog;
@@ -17,7 +18,7 @@ class BlogCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, BlogViewerPage.route(blog));
+        context.goNamed(AppRoutes.blogDetails, extra: blog);
       },
       child: Container(
         height: 200,

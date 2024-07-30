@@ -4,16 +4,16 @@ import 'package:capestone_test/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:capestone_test/core/common/widget/animation_wrapper.dart';
 import 'package:capestone_test/core/common/widget/custom_painters/dotted_border_painter.dart';
 import 'package:capestone_test/core/common/widget/loader.dart';
+import 'package:capestone_test/core/routes/app_routes.dart';
 import 'package:capestone_test/core/theme/app_pallete.dart';
 import 'package:capestone_test/core/util/pick_image.dart';
 import 'package:capestone_test/features/blog/presentation/blocs/blog_bloc.dart';
-import 'package:capestone_test/features/blog/presentation/pages/blog_page.dart';
 import 'package:capestone_test/features/blog/presentation/widgets/blog_editor.dart';
 import 'package:capestone_test/features/blog/presentation/widgets/choice_chip_list_view.dart';
-import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class AddBlogPage extends StatefulWidget {
   const AddBlogPage({super.key});
@@ -53,55 +53,21 @@ class _AddBlogPageState extends State<AddBlogPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Blog Page'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.post_add_outlined),
-            onPressed: () {
-              if (formKey.currentState!.validate() &&
-                  image != null &&
-                  selectedTopics.isNotEmpty) {
-                final posterId =
-                    (context.read<AppUserCubit>().state as AppUserLoggedIn)
-                        .profileEntity
-                        .id;
-
-                context.read<BlogBloc>().add(
-                      UploadBlogEvent(
-                        posterId: posterId,
-                        title: _titleController.text,
-                        content: _contentController.text,
-                        topics: selectedTopics,
-                        image: image!,
-                      ),
-                    );
-                // Upload the blog
-              }
-              // Save the blog
-            },
-          ),
-        ],
-      ),
+      appBar: _buildAppBar(context),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: BlocConsumer<BlogBloc, BlogState>(
           listener: (context, state) {
             if (state is UploadBlogSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Blog Uploaded Successfully'),
-                ),
-              );
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const BlogPage()),
-                (route) => false,
-              );
-            } else if (state is BlogFailure) {
-              if (kDebugMode) {
-                print(state.message);
+              context.goNamed(AppRoutes.blogPage);
+              if (mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Blog Uploaded Successfully'),
+                  ),
+                );
               }
+            } else if (state is BlogFailure) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(state.message),
@@ -146,6 +112,37 @@ class _AddBlogPageState extends State<AddBlogPage> {
     );
   }
 
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      title: const Text('Add Blog Page'),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.post_add_outlined),
+          onPressed: () {
+            if (formKey.currentState!.validate() &&
+                image != null &&
+                selectedTopics.isNotEmpty) {
+              final posterId =
+                  (context.read<AppUserCubit>().state as AppUserLoggedIn)
+                      .profileEntity
+                      .id;
+
+              context.read<BlogBloc>().add(
+                    UploadBlogEvent(
+                      posterId: posterId,
+                      title: _titleController.text,
+                      content: _contentController.text,
+                      topics: selectedTopics,
+                      image: image!,
+                    ),
+                  );
+            }
+          },
+        ),
+      ],
+    );
+  }
+
   FilterChipListView _buildFilterChips() {
     return FilterChipListView(
       chipLabels: const [
@@ -158,9 +155,6 @@ class _AddBlogPageState extends State<AddBlogPage> {
       onSelected: (value) {
         selectedTopics.clear();
         selectedTopics.addAll(value);
-        if (kDebugMode) {
-          print(selectedTopics);
-        }
       },
     );
   }
