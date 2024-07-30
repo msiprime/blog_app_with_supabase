@@ -1,14 +1,15 @@
 import 'package:capestone_test/core/common/widget/loader.dart';
+import 'package:capestone_test/core/routes/app_routes.dart';
 import 'package:capestone_test/core/theme/app_pallete.dart';
 import 'package:capestone_test/core/util/show_snackbar.dart';
 import 'package:capestone_test/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:capestone_test/features/auth/presentation/pages/login_page.dart';
 import 'package:capestone_test/features/auth/presentation/widgets/auth_field.dart';
 import 'package:capestone_test/features/auth/presentation/widgets/auth_gradient_button.dart';
 import 'package:capestone_test/features/blog/presentation/pages/blog_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -145,12 +146,13 @@ class _SignUpPageState extends State<SignUpPage> {
     return Row(
       children: [
         Checkbox(
-            value: _isAgreedToTerms,
-            onChanged: (newValue) {
-              setState(() {
-                _isAgreedToTerms = newValue!;
-              });
-            }),
+          value: _isAgreedToTerms,
+          onChanged: (newValue) {
+            setState(() {
+              _isAgreedToTerms = newValue!;
+            });
+          },
+        ),
         Expanded(
           child: RichText(
             text: const TextSpan(
@@ -180,12 +182,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget _buildIfAlreadyHaveAnAccount() {
     return GestureDetector(
       onTap: () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const LoginPage(),
-          ),
-        );
+        context.goNamed(AppRoutes.login);
       },
       child: RichText(
         text: const TextSpan(
