@@ -117,7 +117,9 @@ class _BlogPageState extends State<BlogPage> {
           title: const Text('Logout'),
           onTap: () {
             context.read<AuthBloc>().add(const AuthSignOutEvent());
-            context.goNamed('login');
+            if (context.read<AuthBloc>().state is AuthInitial) {
+              context.goNamed('login');
+            }
           },
         ),
       ],
