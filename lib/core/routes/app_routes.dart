@@ -8,3 +8,5 @@ class AppRoutes {
   static const String addBlog = 'addBlog';
   static const String blogDetails = 'blogDetails';
 }
+
+
