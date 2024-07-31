@@ -6,6 +6,7 @@ import 'package:capestone_test/features/blog/presentation/pages/add_blog_page.da
 import 'package:capestone_test/features/blog/presentation/pages/blog_page.dart';
 import 'package:capestone_test/features/blog/presentation/pages/blog_viewer_page.dart';
 import 'package:capestone_test/features/landing/landing_page.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'error_page.dart';
@@ -27,9 +28,11 @@ class AppRouter {
             builder: (context, state) => const LandingPage(),
           ),
           GoRoute(
+            pageBuilder: (context, state) =>
+                MaterialPage(child: BlogPage(), key: UniqueKey()),
             name: AppRoutes.blogPage,
             path: AppRoutes.blogPage,
-            builder: (context, state) => const BlogPage(),
+            // builder: (context, state) => const BlogPage(),
             routes: [
               GoRoute(
                 name: AppRoutes.addBlog,
