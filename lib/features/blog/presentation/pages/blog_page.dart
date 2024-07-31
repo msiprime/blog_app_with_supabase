@@ -23,11 +23,11 @@ class _BlogPageState extends State<BlogPage> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    context.read<BlogBloc>().close();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   context.read<BlogBloc>().close();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
