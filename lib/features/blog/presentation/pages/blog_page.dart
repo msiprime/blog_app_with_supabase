@@ -1,5 +1,6 @@
 import 'package:capestone_test/core/common/widget/animation_wrapper.dart';
 import 'package:capestone_test/core/common/widget/loader.dart';
+import 'package:capestone_test/core/routes/app_routes.dart';
 import 'package:capestone_test/core/theme/app_pallete.dart';
 import 'package:capestone_test/core/util/show_snackbar.dart';
 import 'package:capestone_test/features/auth/presentation/bloc/auth_bloc.dart';
@@ -45,6 +46,9 @@ class _BlogPageState extends State<BlogPage> {
         },
         child: BlocConsumer<BlogBloc, BlogState>(
           listener: (context, state) {
+            if (state is AuthInitial || state is AuthFailure) {
+              context.goNamed(AppRoutes.landing);
+            }
             if (state is BlogFailure) {
               showSnackBar(context: context, message: state.message);
             }
@@ -122,7 +126,7 @@ class _BlogPageState extends State<BlogPage> {
           title: const Text('Logout'),
           onTap: () {
             context.read<AuthBloc>().add(const AuthSignOutEvent());
-            context.goNamed('/');
+            context.goNamed(AppRoutes.landing);
           },
         ),
       ],
