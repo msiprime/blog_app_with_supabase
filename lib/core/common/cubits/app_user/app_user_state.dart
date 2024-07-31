@@ -16,3 +16,8 @@ final class AppUserLoggedIn extends AppUserState {
     required this.profileEntity,
   });
 }
+
+final class AppUserToggleThemeMode extends AppUserState {
+
+}
+

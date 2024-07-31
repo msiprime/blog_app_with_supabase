@@ -1,3 +1,4 @@
+import 'package:capestone_test/core/common/widget/custom_painters/dotted_border_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -33,6 +34,13 @@ class CachedNetworkImage extends StatelessWidget {
           return ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Image.network(
+              errorBuilder: (context, error, stackTrace) => CustomPaint(
+                painter: DottedBorderPainter(color: Colors.grey),
+                child: const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text("⚠ Image url fetching error!!"),
+                ),
+              ),
               imageUrl,
               key: ValueKey(imageUrl),
               fit: BoxFit.cover,

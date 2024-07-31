@@ -11,7 +11,7 @@ class UserSignOutUseCase implements UseCase<void, void> {
   });
 
   @override
-  Future<Either<Failure, void>> call(_) async {
+  Future<Either<Failure, String>> call(_) async {
     return await authRepository.signOut();
   }
 }

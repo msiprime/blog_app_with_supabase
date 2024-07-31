@@ -1,5 +1,6 @@
 import 'package:capestone_test/core/common/widget/animation_wrapper.dart';
 import 'package:capestone_test/core/common/widget/loader.dart';
+import 'package:capestone_test/core/common/widget/toggle_theme_button.dart';
 import 'package:capestone_test/core/routes/app_routes.dart';
 import 'package:capestone_test/core/theme/app_pallete.dart';
 import 'package:capestone_test/core/util/show_snackbar.dart';
@@ -18,6 +19,8 @@ class BlogPage extends StatefulWidget {
 }
 
 class _BlogPageState extends State<BlogPage> {
+  bool isDarkMode = false;
+
   @override
   void initState() {
     context.read<BlogBloc>().add(const GetAllBlogsEvent());
@@ -38,24 +41,31 @@ class _BlogPageState extends State<BlogPage> {
         onRefresh: () async {
           context.read<BlogBloc>().add(const GetAllBlogsEvent());
         },
-        child: BlocConsumer<BlogBloc, BlogState>(
+        child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
-            if (state is AuthInitial || state is AuthFailure) {
-              context.pop();
-              context.pushReplacement(AppRoutes.landing);
-            }
-            if (state is BlogFailure) {
+            if (state is SignOutSuccessState) {
               showSnackBar(context: context, message: state.message);
+              context.pop();
+              context.pushReplacement(AppRoutes.login);
             }
           },
           builder: (context, state) {
-            if (state is BlogLoading) {
-              return const Loader();
-            }
-            if (state is FetchBlogSuccess) {
-              return _buildBlogListView(state);
-            }
-            return const SizedBox();
+            return BlocConsumer<BlogBloc, BlogState>(
+              listener: (context, state) {
+                if (state is BlogFailure) {
+                  showSnackBar(context: context, message: state.message);
+                }
+              },
+              builder: (context, state) {
+                if (state is BlogLoading) {
+                  return const Loader();
+                }
+                if (state is FetchBlogSuccess) {
+                  return _buildBlogListView(state);
+                }
+                return const SizedBox();
+              },
+            );
           },
         ),
       ),
@@ -90,41 +100,56 @@ class _BlogPageState extends State<BlogPage> {
     return NavigationDrawer(
       tilePadding: const EdgeInsets.symmetric(vertical: 10),
       children: [
-        const UserAccountsDrawerHeader(
-          decoration: BoxDecoration(
-            color: AppPallete.gradient1,
-            gradient: LinearGradient(
-              colors: [
-                AppPallete.gradient1,
-                AppPallete.gradient2,
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-          currentAccountPicture: CircleAvatar(
-            child: Icon(
-              Icons.person,
-            ),
-          ),
-          accountName: Text(
-            'Msi Sakib',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          accountEmail: Text('msisakib958@gmail.com'),
-        ),
-        ListTile(
-          leading: const Icon(Icons.logout),
-          title: const Text('Logout'),
-          onTap: () {
-            context.read<AuthBloc>().add(const AuthSignOutEvent());
-            context.goNamed(AppRoutes.landing);
-          },
+        _buildUserAccountsDrawerHeader(),
+        _buildLogoutButtonTile(context),
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text('Use Dark Theme'),
+            SizedBox(width: 10),
+            ToggleThemeButton(),
+          ],
         ),
       ],
+    );
+  }
+
+  ListTile _buildLogoutButtonTile(BuildContext context) {
+    return ListTile(
+      leading: const Icon(Icons.logout),
+      title: const Text('Logout'),
+      onTap: () {
+        context.read<AuthBloc>().add(const AuthSignOutEvent());
+      },
+    );
+  }
+
+  UserAccountsDrawerHeader _buildUserAccountsDrawerHeader() {
+    return const UserAccountsDrawerHeader(
+      decoration: BoxDecoration(
+        color: AppPallete.gradient1,
+        gradient: LinearGradient(
+          colors: [
+            AppPallete.gradient1,
+            AppPallete.gradient2,
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      currentAccountPicture: CircleAvatar(
+        child: Icon(
+          Icons.person,
+        ),
+      ),
+      accountName: Text(
+        'Msi Sakib',
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      accountEmail: Text('msisakib958@gmail.com'),
     );
   }
 }

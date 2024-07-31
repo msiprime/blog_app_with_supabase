@@ -1,3 +1,4 @@
+import 'package:capestone_test/core/common/bloc/base_bloc.dart';
 import 'package:capestone_test/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:capestone_test/core/network/connection_checker.dart';
 import 'package:capestone_test/core/secret/app_secrets.dart';
@@ -60,6 +61,13 @@ Future<void> initDependencies() async {
   serviceLocator.registerLazySingleton(() => Hive.box(name: 'blog'));
   _initAuth();
   _initBlog();
+  _initBase();
+}
+
+void _initBase() {
+  serviceLocator.registerFactory(
+    () => BaseBloc(),
+  );
 }
 
 void _initAuth() {
