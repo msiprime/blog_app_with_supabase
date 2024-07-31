@@ -1,10 +1,11 @@
 import 'package:capestone_test/core/common/widget/animation_wrapper.dart';
-import 'package:capestone_test/core/common/widget/loader.dart';
+import 'package:capestone_test/core/common/widget/cached_network_image.dart';
 import 'package:capestone_test/core/theme/app_pallete.dart';
 import 'package:capestone_test/core/util/calculate_reading_time.dart';
 import 'package:capestone_test/core/util/format_date.dart';
 import 'package:capestone_test/features/blog/domain/entities/blog_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class BlogViewerPage extends StatelessWidget {
   final BlogEntity blog;
@@ -35,7 +36,7 @@ class BlogViewerPage extends StatelessWidget {
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
-                  ),
+                  ).animate().slideX(),
                   const SizedBox(height: 20),
                   Text(
                     'By ${blog.posterName}',
@@ -43,7 +44,7 @@ class BlogViewerPage extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
                     ),
-                  ),
+                  ).animate().slideX(),
                   const SizedBox(height: 5),
                   Text(
                     '${formatDateBydMMMYYYY(blog.updatedAt)} . ${calculateReadingTime(blog.content)} min',
@@ -52,23 +53,9 @@ class BlogViewerPage extends StatelessWidget {
                       color: AppPallete.greyColor,
                       fontSize: 16,
                     ),
-                  ),
+                  ).animate().slideX(),
                   const SizedBox(height: 20),
-                  AnimatedWrapper(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.network(
-                        blog.imageUrl,
-                        loadingBuilder: (context, child, loadingProgress) =>
-                            loadingProgress == null
-                                ? child
-                                : const SizedBox(
-                                    height: 200,
-                                    child: Loader(),
-                                  ),
-                      ),
-                    ),
-                  ),
+                  CachedNetworkImage(imageUrl: blog.imageUrl),
                   const SizedBox(height: 20),
                   AnimatedWrapper(
                     child: Text(

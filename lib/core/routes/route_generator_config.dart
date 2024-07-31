@@ -1,4 +1,5 @@
 import 'package:capestone_test/core/routes/app_routes.dart';
+import 'package:capestone_test/core/routes/error_page.dart';
 import 'package:capestone_test/features/auth/presentation/pages/login_page.dart';
 import 'package:capestone_test/features/auth/presentation/pages/signup_page.dart';
 import 'package:capestone_test/features/blog/domain/entities/blog_entity.dart';
@@ -9,8 +10,6 @@ import 'package:capestone_test/features/landing/landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'error_page.dart';
-
 class AppRouter {
   AppRouter._privateConstructor();
 
@@ -18,30 +17,46 @@ class AppRouter {
 
   factory AppRouter() => _instance;
 
+  GoRoute _transitionThemedGoRoute({
+    required String name,
+    required String path,
+    required Widget Function(BuildContext, GoRouterState) builder,
+    List<RouteBase> routes = const [],
+  }) =>
+      GoRoute(
+        routes: routes,
+        name: name,
+        path: path,
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: builder(context, state),
+          transitionsBuilder: (_, animation, __, child) => FadeTransition(
+            opacity: CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+            child: child,
+          ),
+        ),
+      );
+
   GoRouter get router => GoRouter(
         // debugLogDiagnostics: true,
         errorPageBuilder: (context, state) => ErrorPage(state: state).page,
         routes: [
-          GoRoute(
+          _transitionThemedGoRoute(
             name: AppRoutes.landing,
             path: AppRoutes.landing,
             builder: (context, state) => const LandingPage(),
           ),
-          GoRoute(
-            pageBuilder: (context, state) => MaterialPage(
-              child: const BlogPage(),
-              key: state.pageKey,
-            ),
+          _transitionThemedGoRoute(
             name: AppRoutes.blogPage,
             path: AppRoutes.blogPage,
-            // builder: (context, state) => const BlogPage(),
+            builder: (context, state) => const BlogPage(),
             routes: [
-              GoRoute(
+              _transitionThemedGoRoute(
                 name: AppRoutes.addBlog,
                 path: AppRoutes.addBlog,
                 builder: (context, state) => const AddBlogPage(),
               ),
-              GoRoute(
+              _transitionThemedGoRoute(
                 name: AppRoutes.blogDetails,
                 path: AppRoutes.blogDetails,
                 builder: (context, state) =>
@@ -49,14 +64,14 @@ class AppRouter {
               ),
             ],
           ),
-          GoRoute(
-            name: AppRoutes.signUp,
+          _transitionThemedGoRoute(
             path: AppRoutes.signUp,
+            name: AppRoutes.signUp,
             builder: (context, state) => const SignUpPage(),
           ),
-          GoRoute(
-            name: AppRoutes.login,
+          _transitionThemedGoRoute(
             path: AppRoutes.login,
+            name: AppRoutes.login,
             builder: (context, state) => const LoginPage(),
           ),
         ],

@@ -25,12 +25,6 @@ class _BlogPageState extends State<BlogPage> {
   }
 
   @override
-  void dispose() {
-    context.read<BlogBloc>().close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: _buildNavigationDrawer(context),
