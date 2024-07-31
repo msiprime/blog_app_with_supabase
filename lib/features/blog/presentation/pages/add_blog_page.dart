@@ -146,6 +146,9 @@ class _AddBlogPageState extends State<AddBlogPage> {
 
   FilterChipListView _buildFilterChips() {
     return FilterChipListView(
+      unselectedColor: Theme.of(context).brightness == Brightness.light
+          ? Colors.white
+          : AppPallete.backgroundColor,
       chipLabels: const [
         'Business',
         'Technology',

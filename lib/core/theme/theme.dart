@@ -29,4 +29,39 @@ class AppTheme {
       errorBorder: _border(AppPallete.errorColor),
     ),
   );
+
+  static final lightThemeMode = ThemeData.light().copyWith(
+    scaffoldBackgroundColor: AppPallete.lightBackgroundColor,
+    primaryColor: AppPallete.lightPrimaryColor,
+    hintColor: AppPallete.lightTextColor,
+    appBarTheme: const AppBarTheme(
+      titleTextStyle: TextStyle(fontSize: 18, color: AppPallete.lightTextColor),
+      centerTitle: true,
+      backgroundColor: AppPallete.lightBackgroundColor,
+      iconTheme: IconThemeData(color: AppPallete.lightTextColor),
+    ),
+    chipTheme: const ChipThemeData(
+      backgroundColor: AppPallete.lightBackgroundColor,
+      side: BorderSide.none,
+      labelStyle: TextStyle(color: AppPallete.lightTextColor),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      contentPadding: const EdgeInsets.all(27),
+      border: _border(AppPallete.lightBorderColor),
+      enabledBorder: _border(AppPallete.lightBorderColor),
+      focusedBorder: _border(AppPallete.lightPrimaryColor),
+      errorBorder: _border(AppPallete.errorColor),
+    ),
+    textTheme: const TextTheme(
+      bodyLarge: TextStyle(color: AppPallete.lightTextColor),
+      bodyMedium: TextStyle(color: AppPallete.lightTextColor),
+    ),
+    cardColor: AppPallete.lightBackgroundColor,
+    iconTheme: const IconThemeData(color: AppPallete.lightTextColor),
+    buttonTheme: const ButtonThemeData(
+      buttonColor: AppPallete.lightPrimaryColor,
+      textTheme: ButtonTextTheme.primary,
+    ),
+  );
 }
+

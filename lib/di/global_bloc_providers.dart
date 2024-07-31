@@ -1,3 +1,4 @@
+import 'package:capestone_test/core/common/bloc/base_bloc.dart';
 import 'package:capestone_test/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:capestone_test/di/init_dependencies.dart';
 import 'package:capestone_test/features/auth/presentation/bloc/auth_bloc.dart';
@@ -16,6 +17,9 @@ class GlobalBlocProviders {
     dynamic providers = [
       BlocProvider<AuthBloc>(
         create: (context) => serviceLocator<AuthBloc>(),
+      ),
+      BlocProvider<BaseBloc>(
+        create: (context) => serviceLocator<BaseBloc>(),
       ),
       BlocProvider<BlogBloc>(
         create: (context) => serviceLocator<BlogBloc>(),

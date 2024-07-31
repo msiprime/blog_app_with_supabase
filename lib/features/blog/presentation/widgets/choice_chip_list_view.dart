@@ -7,7 +7,7 @@ class FilterChipListView extends StatelessWidget {
   final Color selectedColor;
   final Color selectedBorderColor;
   final Color unSelectedBorderColor;
-  final Color unselectedColor;
+  final Color? unselectedColor;
   final TextStyle? selectedTextStyle;
   final TextStyle? unselectedTextStyle;
   final double borderRadius;
@@ -26,7 +26,7 @@ class FilterChipListView extends StatelessWidget {
     this.selectedBorderColor = Colors.transparent,
     this.unSelectedBorderColor = const Color.fromRGBO(52, 51, 67, 1),
     this.selectedColor = const Color.fromRGBO(187, 63, 221, 1),
-    this.unselectedColor = const Color.fromRGBO(24, 24, 32, 1),
+    this.unselectedColor,
     this.selectedTextStyle = const TextStyle(fontSize: 15),
     this.unselectedTextStyle = const TextStyle(fontSize: 15),
     this.borderRadius = 10.0,

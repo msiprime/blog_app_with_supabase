@@ -47,7 +47,9 @@ class BlogCard extends StatelessWidget {
                             child: Chip(
                               label: Text(e),
                               color: WidgetStatePropertyAll(
-                                Colors.blueGrey[900],
+                                Theme.of(context).brightness == Brightness.light
+                                    ? Colors.white
+                                    : Colors.blueGrey[900],
                               ),
                             ),
                           ),

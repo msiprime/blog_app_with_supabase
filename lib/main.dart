@@ -1,3 +1,5 @@
+import 'package:capestone_test/core/common/bloc/base_bloc.dart';
+import 'package:capestone_test/core/common/bloc/base_state.dart';
 import 'package:capestone_test/core/theme/theme.dart';
 import 'package:capestone_test/di/global_bloc_providers.dart';
 import 'package:capestone_test/di/init_dependencies.dart';
@@ -26,11 +28,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: AppTheme.darkThemeMode,
-      routerConfig: AppRouter().router,
+    return BlocBuilder<BaseBloc, BaseState>(
+      builder: (context, state) {
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          themeMode: state.themeMode,
+          theme: AppTheme.lightThemeMode,
+          darkTheme: AppTheme.darkThemeMode,
+          routerConfig: AppRouter().router,
+        );
+      },
     );
   }
 }
