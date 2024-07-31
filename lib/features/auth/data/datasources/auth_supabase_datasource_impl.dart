@@ -78,9 +78,12 @@ class AuthSupabaseDatasourceImpl implements AuthSupabaseDatasource {
   }
 
   @override
-  FutureOr<void> signOut() {
+  FutureOr<void> signOut() async {
     try {
-      return supabaseClient.auth.signOut();
+      final result =
+          await supabaseClient.auth.signOut(scope: SignOutScope.global);
+      // currentSessionKey = null;
+      return result;
     } catch (e) {
       throw ServerException(
         e.toString(),

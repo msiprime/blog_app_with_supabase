@@ -97,8 +97,8 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, String>> signOut() async {
     try {
-      FutureOr<void> response = remoteDataSource.signOut();
-      return right('Sign out successful $response');
+      await remoteDataSource.signOut();
+      return right('Sign out successful');
     } on ServerException catch (e) {
       return left(
         Failure(e.message),

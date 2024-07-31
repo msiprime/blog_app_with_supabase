@@ -38,24 +38,31 @@ class _BlogPageState extends State<BlogPage> {
         onRefresh: () async {
           context.read<BlogBloc>().add(const GetAllBlogsEvent());
         },
-        child: BlocConsumer<BlogBloc, BlogState>(
+        child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
-            if (state is AuthInitial || state is AuthFailure) {
-              context.pop();
-              context.pushReplacement(AppRoutes.landing);
-            }
-            if (state is BlogFailure) {
+            if (state is SignOutSuccessState) {
               showSnackBar(context: context, message: state.message);
+              context.pop();
+              context.pushReplacement(AppRoutes.login);
             }
           },
           builder: (context, state) {
-            if (state is BlogLoading) {
-              return const Loader();
-            }
-            if (state is FetchBlogSuccess) {
-              return _buildBlogListView(state);
-            }
-            return const SizedBox();
+            return BlocConsumer<BlogBloc, BlogState>(
+              listener: (context, state) {
+                if (state is BlogFailure) {
+                  showSnackBar(context: context, message: state.message);
+                }
+              },
+              builder: (context, state) {
+                if (state is BlogLoading) {
+                  return const Loader();
+                }
+                if (state is FetchBlogSuccess) {
+                  return _buildBlogListView(state);
+                }
+                return const SizedBox();
+              },
+            );
           },
         ),
       ),
@@ -121,7 +128,6 @@ class _BlogPageState extends State<BlogPage> {
           title: const Text('Logout'),
           onTap: () {
             context.read<AuthBloc>().add(const AuthSignOutEvent());
-            context.goNamed(AppRoutes.landing);
           },
         ),
       ],

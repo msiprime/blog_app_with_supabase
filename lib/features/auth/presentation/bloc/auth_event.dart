@@ -30,6 +30,8 @@ class AuthSignOutEvent extends AuthEvent {
   const AuthSignOutEvent();
 }
 
+
+
 class AuthIsUserLoggedInEvent extends AuthEvent {
   const AuthIsUserLoggedInEvent();
 }

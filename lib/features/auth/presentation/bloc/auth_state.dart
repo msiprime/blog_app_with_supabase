@@ -33,3 +33,11 @@ class AuthFailure extends AuthState {
     this.message,
   );
 }
+
+class SignOutSuccessState extends AuthState {
+  final String message;
+
+  const SignOutSuccessState({
+    required this.message,
+  });
+}
