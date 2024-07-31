@@ -59,7 +59,8 @@ class _AddBlogPageState extends State<AddBlogPage> {
         child: BlocConsumer<BlogBloc, BlogState>(
           listener: (context, state) {
             if (state is UploadBlogSuccess) {
-              context.goNamed(AppRoutes.blogPage);
+              // context.goNamed(AppRoutes.blogPage);
+              context.pushReplacement(AppRoutes.blogPage);
               if (mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(

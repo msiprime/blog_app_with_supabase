@@ -30,7 +30,7 @@ class AppRouter {
           GoRoute(
             pageBuilder: (context, state) => MaterialPage(
               child: const BlogPage(),
-              key: UniqueKey(),
+              key: state.pageKey,
             ),
             name: AppRoutes.blogPage,
             path: AppRoutes.blogPage,

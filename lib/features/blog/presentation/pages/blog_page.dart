@@ -24,11 +24,11 @@ class _BlogPageState extends State<BlogPage> {
     super.initState();
   }
 
-  // @override
-  // void dispose() {
-  //   context.read<BlogBloc>().close();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    context.read<BlogBloc>().close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,8 @@ class _BlogPageState extends State<BlogPage> {
         child: BlocConsumer<BlogBloc, BlogState>(
           listener: (context, state) {
             if (state is AuthInitial || state is AuthFailure) {
-              context.goNamed(AppRoutes.landing);
+              context.pop();
+              context.pushReplacement(AppRoutes.landing);
             }
             if (state is BlogFailure) {
               showSnackBar(context: context, message: state.message);
