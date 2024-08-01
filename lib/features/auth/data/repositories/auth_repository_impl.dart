@@ -1,4 +1,4 @@
-import 'dart:async' show Future, FutureOr;
+import 'dart:async' show Future;
 
 import 'package:capestone_test/core/error/exceptions.dart';
 import 'package:capestone_test/core/error/failures.dart';
