@@ -1,7 +1,6 @@
 import 'package:capestone_test/core/common/widget/animation_wrapper.dart';
 import 'package:capestone_test/core/common/widget/loader.dart';
 import 'package:capestone_test/core/common/widget/toggle_theme_button.dart';
-import 'package:capestone_test/core/routes/app_routes.dart';
 import 'package:capestone_test/core/theme/app_pallete.dart';
 import 'package:capestone_test/core/util/show_snackbar.dart';
 import 'package:capestone_test/features/auth/presentation/bloc/auth_bloc.dart';
@@ -10,6 +9,7 @@ import 'package:capestone_test/features/blog/presentation/widgets/blog_card.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hydrated_bloc_testground/hydrated_bloc_testground.dart';
 
 class BlogPage extends StatefulWidget {
   const BlogPage({super.key});
@@ -19,8 +19,6 @@ class BlogPage extends StatefulWidget {
 }
 
 class _BlogPageState extends State<BlogPage> {
-  bool isDarkMode = false;
-
   @override
   void initState() {
     context.read<BlogBloc>().add(const GetAllBlogsEvent());
@@ -34,6 +32,20 @@ class _BlogPageState extends State<BlogPage> {
       appBar: AppBar(
         title: const Text('Blog Page'),
         actions: [
+          IconButton(
+              onPressed: () {
+                context
+                    .read<HydratedThemeBloc>()
+                    .add(const DarkThemeSelectedEvent());
+              },
+              icon: const Icon(Icons.dark_mode_outlined)),
+          IconButton(
+              onPressed: () {
+                context
+                    .read<HydratedThemeBloc>()
+                    .add(const LightThemeSelectedEvent());
+              },
+              icon: const Icon(Icons.light_mode_outlined)),
           _buildAddBlogButton(context),
         ],
       ),
@@ -41,31 +53,20 @@ class _BlogPageState extends State<BlogPage> {
         onRefresh: () async {
           context.read<BlogBloc>().add(const GetAllBlogsEvent());
         },
-        child: BlocConsumer<AuthBloc, AuthState>(
+        child: BlocConsumer<BlogBloc, BlogState>(
           listener: (context, state) {
-            if (state is SignOutSuccessState) {
+            if (state is BlogFailure) {
               showSnackBar(context: context, message: state.message);
-              context.pop();
-              context.pushReplacement(AppRoutes.login);
             }
           },
           builder: (context, state) {
-            return BlocConsumer<BlogBloc, BlogState>(
-              listener: (context, state) {
-                if (state is BlogFailure) {
-                  showSnackBar(context: context, message: state.message);
-                }
-              },
-              builder: (context, state) {
-                if (state is BlogLoading) {
-                  return const Loader();
-                }
-                if (state is FetchBlogSuccess) {
-                  return _buildBlogListView(state);
-                }
-                return const SizedBox();
-              },
-            );
+            if (state is BlogLoading) {
+              return const Loader();
+            }
+            if (state is FetchBlogSuccess) {
+              return _buildBlogListView(state);
+            }
+            return const SizedBox();
           },
         ),
       ),
