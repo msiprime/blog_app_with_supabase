@@ -24,6 +24,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
+import 'package:hydrated_bloc_testground/hydrated_bloc_testground.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -47,6 +48,9 @@ Future<void> initDependencies() async {
   // Core
   serviceLocator.registerLazySingleton<AppUserCubit>(
     () => AppUserCubit(),
+  );
+  serviceLocator.registerLazySingleton<HydratedThemeBloc>(
+    () => HydratedThemeBloc(),
   );
 
   serviceLocator.registerFactory<ConnectionChecker>(
